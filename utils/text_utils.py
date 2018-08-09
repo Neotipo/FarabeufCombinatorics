@@ -53,7 +53,7 @@ class FarabeufProcesser:
         """
         joined = header
         for i in self.indices:
-            joined += '<p>Fragmento {}</p>'.format(i)
+            joined += '<p><p>'
             joined += self.query_fragment(i)
         joined += tail
         return joined
