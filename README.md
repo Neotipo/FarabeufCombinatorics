@@ -1,2 +1,2 @@
 # FarabeufCombinatorics
-Experimenos combinatorios del libro Farabeuf de Salvador Elizondo
+Experimenos combinatorios del libro _Farabeuf_ de Salvador Elizondo

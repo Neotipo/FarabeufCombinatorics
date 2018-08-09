@@ -1,0 +1,59 @@
+#! /usr/bin/env python
+# -*- coding: utf-8 -*-
+
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+
+import re
+
+from docx import Document
+from random import shuffle
+
+frag_regex = re.compile('Fragmento ?\d{1,}', re.IGNORECASE)
+
+class FarabeufProcesser:
+
+    def __init__(self, location='data/1-Farabeuf-Salvador-Elizondo.docx'):
+        self.read_doc(location)
+
+    def read_doc(self, location):
+        """
+        Lee y pre-procesa un documento dado entre fragmentos.
+        Regresa una lista de fragmentos y una lista de sus índices empezando por 1.
+        """
+        doc = Document(location)
+        paragraphs = [p.text.strip() for p in doc.paragraphs if p.text.strip()]
+        paragraphs = ' '.join(paragraphs)
+
+        # División por fragmentos
+        fragmentos = [p.strip() for p in frag_regex.split(paragraphs)
+                      if p.strip()]
+
+        self.fragmentos = fragmentos[1:]
+        self.indices = list(range(len(self.fragmentos) + 1)[1:])
+
+    def shuffle_indices(self):
+        """
+        Permuta aleatoriamente los fragmentos
+        """
+        shuffle(self.indices)
+
+    def query_fragment(self, n):
+        """
+        Consulta de fragmentos
+        """
+        assert n > 0 and n <= len(self.fragmentos)
+        return self.fragmentos[n - 1]
+
+    def join_doc(self, header='', tail=''):
+        """
+        Junta los fragmentos en el orden indicado por los índices y
+        separándolos por sep.
+        """
+        joined = header
+        for i in self.indices:
+            joined += '<p>Fragmento {}</p>'.format(i)
+            joined += self.query_fragment(i)
+        joined += tail
+        return joined
