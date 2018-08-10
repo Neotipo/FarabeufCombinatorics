@@ -6,6 +6,7 @@ from __future__ import division
 from __future__ import print_function
 
 import re
+import codecs
 
 from docx import Document
 from random import shuffle
@@ -14,8 +15,22 @@ frag_regex = re.compile('Fragmento ?\d{1,}', re.IGNORECASE)
 
 class FarabeufProcesser:
 
-    def __init__(self, location='data/1-Farabeuf-Salvador-Elizondo.docx'):
-        self.read_doc(location)
+    def __init__(self,
+                 location='data/Farabeuf Salvador Elizondo Obra completa.docx',
+                 read=True,
+                 fragmentos=None,
+                 fragment_indices=None,
+                 header=False):
+        self.header = header
+        if read:
+            self.read_doc(location)
+        else:
+            self.fragmentos = fragmentos
+            self.indices = list(range(len(self.fragmentos) + 1)[1:])
+        if fragment_indices is not None:
+            with codecs.open(fragment_indices, 'r') as f:
+                self.indices = [int(n) for n in f]
+
 
     def read_doc(self, location):
         """
@@ -24,13 +39,16 @@ class FarabeufProcesser:
         """
         doc = Document(location)
         paragraphs = [p.text.strip() for p in doc.paragraphs if p.text.strip()]
-        paragraphs = ' '.join(paragraphs)
+        paragraphs = '**'.join(paragraphs)
 
         # División por fragmentos
         fragmentos = [p.strip() for p in frag_regex.split(paragraphs)
                       if p.strip()]
 
-        self.fragmentos = fragmentos[1:]
+        if self.header:
+            self.fragmentos = fragmentos[1:]
+        else:
+            self.fragmentos = fragmentos
         self.indices = list(range(len(self.fragmentos) + 1)[1:])
 
     def shuffle_indices(self):
@@ -54,6 +72,6 @@ class FarabeufProcesser:
         joined = header
         for i in self.indices:
             joined += '<p><p>'
-            joined += self.query_fragment(i)
+            joined += self.query_fragment(i).replace('**', '<p>')
         joined += tail
         return joined
