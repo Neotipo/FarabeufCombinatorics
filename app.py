@@ -27,7 +27,7 @@ options = {
                                         fragmentos=general_processer.fragmentos),
                       'Story of a sacrifice'),
     'dr_farabeuf_3': (FarabeufProcesser(fragment_indices='data/no_plot.txt', read=False,
-                                    fragmentos=general_processer.fragmentos),
+                                        fragmentos=general_processer.fragmentos),
                       '<i>Farabeuf</i> without plot')
 }
 
