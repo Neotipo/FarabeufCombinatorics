@@ -40,32 +40,32 @@ def iterate():
     if request.method != 'POST':
         return render_template('index.html'), 200
     else:
-        # try:
-        option = request.form['user_selection']
-        fp, title = options[option]
-        fp.shuffle_indices()
-        header = '''
-        <!doctype html>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <h1>{}</h1>
-        '''
-        header = header.format(title)
-        header += '''
-        <button onclick="myFunction()">Iterar de nuevo</button>
-        <script>
-        function myFunction() {
-        location.reload();
-        }
-        </script>
-        <p>
-        <form method="GET" action="/" enctype=multipart/form-data>
-        <button type="submit">Regresar al inicio</button><br>
-        </form>
-        '''
-        output = fp.join_doc(header=header)
-        return output, 200
-    # except:
-    #     return 'L\'erreur', 200
+        try:
+            option = request.form['user_selection']
+            fp, title = options[option]
+            fp.shuffle_indices()
+            header = '''
+            <!doctype html>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <h1>{}</h1>
+            '''
+            header = header.format(title)
+            header += '''
+            <button onclick="myFunction()">Iterar de nuevo</button>
+            <script>
+            function myFunction() {
+            location.reload();
+            }
+            </script>
+            <p>
+            <form method="GET" action="/" enctype=multipart/form-data>
+            <button type="submit">Regresar al inicio</button><br>
+            </form>
+            '''
+            output = fp.join_doc(header=header)
+            return output, 200
+        except:
+            return 'L\'erreur', 200
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=8000)
