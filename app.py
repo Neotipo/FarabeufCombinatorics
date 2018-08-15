@@ -65,7 +65,7 @@ def iterate():
             output = fp.join_doc(header=header)
             return output, 200
         except:
-            return 'L\'erreur', 200
+            return 'L\'erreur', 400
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=8000)
