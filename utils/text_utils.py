@@ -11,17 +11,17 @@ import codecs
 from docx import Document
 from random import shuffle
 
-frag_regex = re.compile('Fragmento ?\d{1,}', re.IGNORECASE)
-
 class FarabeufProcesser:
 
     def __init__(self,
                  location='data/Farabeuf Salvador Elizondo Obra completa.docx',
+                 frag_regex='Fragmento ?\d{1,}',
                  read=True,
                  fragmentos=None,
                  fragment_indices=None,
                  header=False):
         self.header = header
+        self.frag_regex = re.compile(frag_regex)
         if read:
             self.read_doc(location)
         else:
@@ -42,7 +42,7 @@ class FarabeufProcesser:
         paragraphs = '**'.join(paragraphs)
 
         # División por fragmentos
-        fragmentos = [p.strip() for p in frag_regex.split(paragraphs)
+        fragmentos = [p.strip() for p in self.frag_regex.split(paragraphs)
                       if p.strip()]
 
         if self.header:
