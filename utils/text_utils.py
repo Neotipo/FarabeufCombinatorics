@@ -64,13 +64,15 @@ class FarabeufProcesser:
         assert n > 0 and n <= len(self.fragmentos)
         return self.fragmentos[n - 1]
 
-    def join_doc(self, header='', tail=''):
+    def join_doc(self, header='', tail='', include_indices=False):
         """
         Junta los fragmentos en el orden indicado por los índices y
         separándolos por sep.
         """
         joined = header
         for i in self.indices:
+            if include_indices:
+                joined += '<p><h4>{}</h4><p>'.format(i)
             joined += '<p><p>'
             joined += self.query_fragment(i).replace('**', '<p>')
         joined += tail

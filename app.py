@@ -96,9 +96,9 @@ def bastardo():
         }
         </script>
         '''
-        output = bastardo_pl.join_doc(header=header)
-        output = bastardo_nu.join_doc(header=output)
-        output = bastardo_de.join_doc(header=output)
+        output = bastardo_pl.join_doc(header=header, include_indices=True)
+        output = bastardo_nu.join_doc(header=output, include_indices=True)
+        output = bastardo_de.join_doc(header=output, include_indices=True)
         return output, 200
     except:
         return 'L\'erreur', 400
